@@ -30,9 +30,11 @@ public class testThreeAddThreeRemove {
     }
     @Test
     public void randAdd(){
+        //随机测试能提供bug在哪里的能力并不清晰 因此随机测试并不推荐！
         AListNoResizing<Integer> L = new AListNoResizing<>();
+        BuggyAList<Integer> B = new BuggyAList<>();
 
-        int N = 500;
+        int N = 5000;
         for (int i = 0; i < N; i += 1) {
             int operationNumber = StdRandom.uniform(0, 4);
             if (operationNumber == 0) {
@@ -40,22 +42,33 @@ public class testThreeAddThreeRemove {
                 int randVal = StdRandom.uniform(0, 100);
                 L.addLast(randVal);
                 System.out.println("addLast(" + randVal + ")");
+                //addLast -Buggy
+                B.addLast(randVal);
+
             } else if (operationNumber == 1) {
                 // size
                 int size = L.size();
                 System.out.println("size: " + size);
+                int size_b = B.size();
+                assertEquals(size,size_b);
             }
             else if (operationNumber == 2){
                 //getlast
-                if (L.size() != 0){
-                    System.out.println("getLast(" + L.getLast() + ")");
+                if ((L.size() != 0) & (B.size() !=0)){
+                    Integer lg=L.getLast();
+                    System.out.println("getLast(" + lg + ")");
+                    assertEquals(lg,B.getLast());
                 }
+
             }
             else if (operationNumber == 3){
                 //remove
-                if (L.size() != 0){
-                    System.out.println("RemoveLast(" + L.removeLast() + ")");
+                if ((L.size() != 0) & (B.size() !=0)){
+                    Integer ir=L.removeLast();
+                    System.out.println("RemoveLast(" + ir + ")");
+                    assertEquals(ir,B.removeLast());
                 }
+
             }
         }
 
